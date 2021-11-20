@@ -22,7 +22,29 @@ public class Controller {
      * 1) A method for setting a File as current file
      */
 
-    private final File currentFile = new File(USERHOME + SEPARATOR + FILE); 
+
+    private File currentFile = new File(USERHOME + SEPARATOR + FILE); 
+
+    /**
+     * @param file
+     *          file on which the following operations will have an effect
+     */
+    public void setFile(final File file) {
+        final File parentFile = file.getParentFile();
+        if (parentFile.exists()) {
+            currentFile = parentFile;
+        } else {
+            throw new IllegalArgumentException("No such directiory exists!");
+        }
+    }
+
+    /**
+     * @param file
+     *          file on which the following operations will have an effect
+     */
+    public void setFile(final String file) {
+        setFile(new File(file));
+    }
 
     /* 2) A method for getting the current File
      */

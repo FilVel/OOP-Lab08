@@ -2,8 +2,17 @@ package it.unibo.oop.lab.mvcio;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+import java.awt.BorderLayout;
 
 /**
  * A very simple program using a graphical interface.
@@ -11,7 +20,7 @@ import javax.swing.JFrame;
  */
 public final class SimpleGUI {
 
-    private final JFrame frame = new JFrame();
+    private final JFrame frame = new JFrame("My first Java Grafical Interface");
 
     /*
      * Once the Controller is done, implement this class in such a way that:
@@ -35,14 +44,34 @@ public final class SimpleGUI {
 
     /**
      * builds a new {@link SimpleGUI}.
+     * 
+     * @param controller
      */
-    public SimpleGUI() {
+    public SimpleGUI(final Controller controller) {
+
+        final JTextArea text = new JTextArea();
+        final JPanel panel = new JPanel();
+        final LayoutManager layout = new BorderLayout();
+        panel.setLayout(layout);
+
+        panel.add(text, BorderLayout.CENTER);
+        final JButton button = new JButton("Save");
+        panel.add(button, BorderLayout.SOUTH);
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                    controller.saveNewString(text.getText());
+            }
+        });
+        frame.setContentPane(panel);
         /*
          * Make the frame half the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
          * primary is selected.
-         * 
-         * In order to deal coherently with multimonitor setups, other
+         */
+
+        /* In order to deal coherently with multimonitor setups, other
          * facilities exist (see the Java documentation about this issue). It is
          * MUCH better than manually specify the size of a window in pixel: it
          * takes into account the current resolution.
@@ -57,6 +86,12 @@ public final class SimpleGUI {
          * on screen. Results may vary, but it is generally the best choice.
          */
         frame.setLocationByPlatform(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
+    public static void main(final String... strings) {
+        final SimpleGUI gui = new SimpleGUI(new Controller());
     }
 
 }

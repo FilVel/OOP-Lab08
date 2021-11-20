@@ -22,7 +22,7 @@ public class Controller {
      * 1) A method for setting a File as current file
      */
 
-    private File currentFile = new File(USERHOME + SEPARATOR + FILE); 
+    private final File currentFile = new File(USERHOME + SEPARATOR + FILE); 
 
     /* 2) A method for getting the current File
      */

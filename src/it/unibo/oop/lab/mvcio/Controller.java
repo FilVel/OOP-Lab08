@@ -32,7 +32,7 @@ public class Controller {
     public void setFile(final File file) {
         final File parentFile = file.getParentFile();
         if (parentFile.exists()) {
-            currentFile = parentFile;
+            currentFile = file;
         } else {
             throw new IllegalArgumentException("No such directiory exists!");
         }
@@ -73,12 +73,17 @@ public class Controller {
     /**
      * @param string
      *        the string that has to be saved in the current file
+     * 
+     * @return true if the operation is successful
+     *         false if it is not
      */
-    public void saveNewString(final String string) {
+    public boolean saveNewString(final String string) {
        try (PrintStream destFile = new PrintStream(currentFile)) {
            destFile.println(string);
+           return true;
        } catch (IOException e) {
            System.out.println("Something has gone wrong while saving");
+           return false;
        }
     }
 

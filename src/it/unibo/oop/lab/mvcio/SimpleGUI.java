@@ -61,7 +61,11 @@ public final class SimpleGUI {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                    controller.saveNewString(text.getText());
+                    if (controller.saveNewString(text.getText())) {
+                        JOptionPane.showConfirmDialog(null, "Operation completed", "Save", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Something has gone wrong...", "Save", JOptionPane.ERROR_MESSAGE);
+                    }
             }
         });
         frame.setContentPane(panel);

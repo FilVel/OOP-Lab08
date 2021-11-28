@@ -21,6 +21,7 @@ public final class DrawNumberViewImpl implements DrawNumberView {
     private static final String RESET = "Reset";
     private static final String GO = "Go";
     private static final String NEW_GAME = ": a new game starts!";
+    private static final String GAME_OVER = ": GAME OVER, try again!";
 
     private DrawNumberViewObserver observer;
     private final JFrame frame = new JFrame(FRAME_NAME);
@@ -102,6 +103,9 @@ public final class DrawNumberViewImpl implements DrawNumberView {
         case YOURS_LOW:
             plainMessage(res.getDescription());
             return;
+        case YOU_LOST:
+            plainMessage(res.getDescription() + GAME_OVER);
+            break;
         case YOU_WON:
             plainMessage(res.getDescription() + NEW_GAME);
             break;
@@ -111,12 +115,12 @@ public final class DrawNumberViewImpl implements DrawNumberView {
         observer.resetGame();
     }
 
-    @Override
-    public void limitsReached() {
-        JOptionPane.showMessageDialog(frame, "You lost" + NEW_GAME, "Lost", JOptionPane.WARNING_MESSAGE);
-    }
-
     private void plainMessage(final String msg) {
         JOptionPane.showMessageDialog(frame, msg, "Result", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    @Override
+    public void displayError(final String errorMessage) {
+        JOptionPane.showMessageDialog(frame, errorMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 }

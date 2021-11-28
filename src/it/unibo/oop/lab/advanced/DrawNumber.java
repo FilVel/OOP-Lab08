@@ -20,5 +20,5 @@ public interface DrawNumber {
      * @throws AttemptsLimitReachedException
      *             in case the game is lost
      */
-    DrawResult attempt(int n) throws AttemptsLimitReachedException;
+    DrawResult attempt(int n);
 }

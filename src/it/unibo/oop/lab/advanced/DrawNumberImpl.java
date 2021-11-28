@@ -15,17 +15,16 @@ public final class DrawNumberImpl implements DrawNumber {
     private final Random random = new Random();
 
     /**
-     * @param min
-     *            minimum number
-     * @param max
-     *            maximum number
-     * @param attempts
-     *            the maximum number of attempts
+     * @param config
+     *            Contains the configuration that the game must use
      */
-    public DrawNumberImpl(final int min, final int max, final int attempts) {
-        this.min = min;
-        this.max = max;
-        this.attempts = attempts;
+    public DrawNumberImpl(final Configuration config) {
+        if (!config.isConsistent()) {
+            throw new IllegalArgumentException("Please insert a valid configuration");
+        }
+        this.min = config.getMin();
+        this.max = config.getMax();
+        this.attempts = config.getAttempts();
         this.reset();
     }
 
@@ -35,22 +34,25 @@ public final class DrawNumberImpl implements DrawNumber {
         this.choice = this.min + random.nextInt(this.max - this.min + 1);
     }
 
-    @Override
-    public DrawResult attempt(final int n) throws AttemptsLimitReachedException {
+    private DrawResult check(final DrawResult result) {
         if (this.remainingAttempts <= 0) {
-            throw new AttemptsLimitReachedException();
+            return DrawResult.YOU_LOST;
         }
+        return result;
+    }
+
+    @Override
+    public DrawResult attempt(final int n) {
         if (n < this.min || n > this.max) {
             throw new IllegalArgumentException("The number is outside boundaries");
         }
         remainingAttempts--;
         if (n > this.choice) {
-            return DrawResult.YOURS_HIGH;
+            return check(DrawResult.YOURS_HIGH);
         }
         if (n < this.choice) {
-            return DrawResult.YOURS_LOW;
+            return check(DrawResult.YOURS_LOW);
         }
         return DrawResult.YOU_WON;
     }
-
 }
